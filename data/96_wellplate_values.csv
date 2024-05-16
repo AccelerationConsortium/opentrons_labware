@@ -1,0 +1,17 @@
+xDimension, 127
+yDimension, 85
+zDimension, 14
+rows, 8
+cols, 12
+volume, 360
+well_shape, circular
+bottom_shape, flat
+well_depth, 10.5
+well_diameter, 6.5
+x_spacing, 9
+y_spacing, 9
+x_offset, 14
+y_offset, 11
+display_name, MatterLab 96 Well Plate 360µL
+load_name, matterlab_96_wellplate_360ul
+display_category, wellPlate
