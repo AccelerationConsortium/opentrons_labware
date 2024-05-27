@@ -5,7 +5,7 @@ class Regular:
     """
     class for generating json file for regular labware
     """
-    def __init__(self, read_template=True):
+    def __init__(self):
         self.template = {}
         self.data = {}
         # self._display_name = None
