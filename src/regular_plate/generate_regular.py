@@ -192,7 +192,7 @@ class Regular:
                 well_name = f"{letter}{col}"
                 x = round(params['x_offset'] + (col - 1) * params['x_spacing'], 2)
                 y = round(params['y_offset'] + (params['rows'] - row - 1) * params['y_spacing'], 2)
-                z = params['zDimension'] - params['well_depth']
+                z = round(params['zDimension'] - params['well_depth'], 2)
                 self.create_well(well_name, params['well_depth'], params['volume'],
                                  params['well_shape'],
                                  params['well_diameter'], x, y, z)

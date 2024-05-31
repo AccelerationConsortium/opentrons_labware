@@ -11,6 +11,7 @@ class MultipleGrids:
         self.grids = []
         self.read_template()
         self.read_parameters(Path('../../data/filtration_values.csv'))
+        # self.read_parameters(Path('../../data/irregular_tuberack_values.csv'))
         self.construct_labware()
 
     def read_template(self, new_path: Path = None):
@@ -22,7 +23,7 @@ class MultipleGrids:
             path = new_path
         else:
             path = Path('../../data/default.json')
-        with open(path) as file:
+        with open(path, encoding="utf-8") as file:
             self.template = json.load(file)
 
     def read_parameters(self, path):
@@ -59,6 +60,7 @@ class MultipleGrids:
         self.display_name()
         self.load_name()
         self.display_category()
+        self.well_bottom_shape()
         current_row_index = 0
         for grid in self.grids:
             current_row_index = self.create_wells(grid, current_row_index)
@@ -74,6 +76,8 @@ class MultipleGrids:
         if new_value is None:
             self.template["dimensions"][f"{direction}Dimension"] = self.grids[0][
                 f"{direction}Dimension"]
+            max_height = max([self.grids[i]["zDimension"] for i in range(len(self.grids))])
+            self.template["dimensions"]["zDimension"] = max_height
         else:
             self.template["dimensions"][f"{direction}Dimension"] = new_value
 
@@ -113,9 +117,21 @@ class MultipleGrids:
         else:
             self.template["metadata"]["displayName"] = category
 
+    def well_bottom_shape(self, new_shape=None):
+        """
+        Changes the bottom shape of a specified well.
+        :param well_name: the name of the well to be updated
+        :param new_shape: the new bottom shape for the well ('flat', 'v', or 'u')
+        """
+        if new_shape is None:
+            self.template["groups"][0]["metadata"]["wellBottomShape"] = self.grids[0]["bottom_shape"]
+        else:
+            self.template["groups"][0]["metadata"]["wellBottomShape"] = new_shape
+
     def create_wells(self, grid, start_row_index):
         """
         Creates wells based on the given parameters
+        start_row_index: keeps track of the indexes of letters for row names
         """
         alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         if "wells" not in self.template:
@@ -127,7 +143,7 @@ class MultipleGrids:
                 well_name = f"{row_letter}{col}"
                 x = round(grid['x_offset'] + (col - 1) * grid['x_spacing'], 2)
                 y = round(grid['y_offset'] + row * grid['y_spacing'], 2)
-                z = grid['zDimension'] - grid['well_depth']
+                z = round(grid['zDimension'] - grid['well_depth'], 2)
                 self.create_well(well_name, grid['well_depth'], grid['volume'],
                                  grid['well_shape'], grid['well_diameter'], x, y, z)
 
@@ -148,7 +164,7 @@ class MultipleGrids:
         }
         self.template["wells"][well_name] = well
 
-    def ordering(self, grid=None):
+    def ordering(self):
         """
         Generates the ordering list for the wells, sorted by column first and then by row
         """
@@ -161,13 +177,14 @@ class MultipleGrids:
 
         self.template["ordering"] = ordering
 
-    def wells(self, grid=None):
+    def wells(self):
         """
         Generates the list of well names, sorted by column first and then by row
         """
         wells = sorted(self.template["wells"].keys(), key=lambda x: (int(x[1:]), x[0]))
         self.template["groups"][0]["wells"].extend(wells)
 
-
 plate = MultipleGrids()
-print(json.dumps(plate.template, indent=4))
+# print(json.dumps(plate.template, indent=4))
+with open(Path(r"../../data/filtration.json"), "w") as f:
+    json.dump(plate.template, f, indent=4)

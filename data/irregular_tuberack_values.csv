@@ -5,7 +5,7 @@ rows,3,2
 cols,2,2
 volume,15000,50000
 well_shape,circular,circular
-bottom_shape,vbottom,vbottom
+bottom_shape,v,v
 well_depth,117.50,113.00
 well_diameter,14.90,27.81
 x_spacing,25,35
