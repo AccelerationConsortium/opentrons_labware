@@ -194,8 +194,7 @@ class Regular:
                 y = round(params['y_offset'] + (params['rows'] - row - 1) * params['y_spacing'], 2)
                 z = round(params['zDimension'] - params['well_depth'], 2)
                 self.create_well(well_name, params['well_depth'], params['volume'],
-                                 params['well_shape'],
-                                 params['well_diameter'], x, y, z)
+                                 params['well_shape'], params['well_diameter'], x, y, z)
 
     def create_well(self, well_name, well_depth, volume, well_shape, well_diameter, x, y, z):
         """

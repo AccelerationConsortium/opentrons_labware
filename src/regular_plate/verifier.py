@@ -6,12 +6,11 @@ class Verifier:
     Class for verifying the generated dictionary or JSON file.
     It can accept either a dictionary or a path to a JSON file.
     """
-
     def __init__(self, labware_def):
         self.labware_def = labware_def
         self.data = None
 
-    def verify(self):
+    def verify(self, run_optional_checks=True):
         """
         Check the generated json file.
         """
@@ -33,6 +32,11 @@ class Verifier:
         self.check_shapes()
         self.check_heights()
         self.check_well_positions()
+        self.check_metadata()
+        self.check_dimensions()
+
+        if run_optional_checks:
+            self.check_volume()
 
     def check_shapes(self):
         """
@@ -42,8 +46,8 @@ class Verifier:
             raise ValueError("Invalid well bottom shape. Options are 'flat', 'v', and 'u'.")
 
         for well in self.data["wells"].keys():
-            if well["shape"] not in ['circular', 'square']:
-                raise ValueError("Invalid well shape. Options are 'circular' and 'square'.")
+            if self.data["wells"][well]["shape"] not in ['circular', 'rectangular']:
+                raise ValueError("Invalid well shape. Options are 'circular' and 'rectangular'.")
 
     def check_heights(self):
         """
@@ -78,11 +82,53 @@ class Verifier:
 
                 # check zDimension > depth or z>=0 for each well
                 if self.data["dimensions"]["zDimension"] < well1["depth"] or well1["z"] < 0:
-                    raise ValueError(f"Well {[well_keys[i]]} height and depth do not make sense.")
+                    raise ValueError("Labware must be taller than well depth.")
 
                 # check wells don't overlap
                 distance = math.dist([well1["x"], well1["y"]], [well2["x"], well2["y"]])
-                if distance < (well1["diameter"] / 2 + well2["diameter"] / 2):
+                if distance < (well1["diameter"] / 2.0 + well2["diameter"] / 2.0):
                     raise ValueError(f"Wells {[well_keys[i]]} and {[well_keys[j]]} overlap.")
 
-    # check pipette doesn't dispense more than max well volume. does opentrons already check this?
+    def check_metadata(self):
+        """
+        Check volume units and category.
+        """
+        if self.data["metadata"]["displayVolumeUnits"] not in ['\u00b5L', 'mL']:
+            raise ValueError("Invalid display units. Options are 'μL' and 'mL'.")
+
+        if (self.data["metadata"]["displayCategory"] not in
+                ["wellPlate", "reservoir", "tubeRack", "aluminumBlock", "tipRack"]):
+            raise ValueError("Invalid category. Options are 'wellPlate', 'reservoir',"
+                             " 'tubeRack', 'aluminumBlock', and 'tipRack'.")
+
+    def check_dimensions(self):
+        """
+        Check xDim <= 127 and yDim <= 85 (with 3mm tolerance).
+        """
+        if (self.data["dimensions"]["xDimension"] > 130
+                or self.data["dimensions"]["yDimension"] > 88):
+            raise ValueError("Labware exceeds maximum allowed dimensions for Opentrons.")
+
+    def check_volume(self):
+        """
+        Check each well volume doesn't exceed the physical max based on well dimensions.
+        For v and u shaped bottoms, assume flat bottom.
+        """
+        well_keys = list(self.data["wells"].keys())
+        for i in range(len(well_keys)):
+            well = self.data["wells"][well_keys[i]]
+            vol = math.pi * well["depth"] * well["diameter"] * well["diameter"] / 4.0
+            tolerance = 15
+            if well["totalLiquidVolume"] > (vol + tolerance):
+                print(f"Warning: Well {well_keys[i]} volume exceeds physical limits. "
+                      "Double check well height, diameter, and volume.")
+                user_input = input("Type 'Y' to proceed to check the next well volume. "
+                                   "Type 'A' to skip remaining well volume checks: ")
+                if user_input.strip().upper() == 'A':
+                    return
+                while user_input.strip().upper() != 'Y':
+                    print("Invalid input. Please type 'Y' to proceed.")
+                    user_input = input("Type 'Y' to proceed: ")
+
+v = Verifier("../../data/filtration.json")
+v.verify()

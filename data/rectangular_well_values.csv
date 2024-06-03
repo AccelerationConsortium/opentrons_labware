@@ -1,0 +1,18 @@
+xDimension, 127
+yDimension, 85
+zDimension, 48
+rows, 4
+cols, 6
+volume, 3400
+well_shape, rectangular
+bottom_shape, flat
+well_depth, 44
+well_xDimension, 5
+well_yDimension, 3
+x_spacing, 20.9
+y_spacing, 20.9
+x_offset, 11.22
+y_offset, 11.08
+display_name, MatterLab 24 Well Plate 3400 µL
+load_name, matterlab_24_wellplate_3400ul
+display_category, wellPlate

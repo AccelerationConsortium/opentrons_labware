@@ -10,18 +10,17 @@ class MultipleGrids:
         self.template = {}
         self.grids = []
         self.read_template()
-        self.read_parameters(Path('../../data/filtration_values.csv'))
+        # self.read_parameters(Path('../../data/filtration_values.csv'))
         # self.read_parameters(Path('../../data/irregular_tuberack_values.csv'))
+        self.read_parameters(Path('../../data/rectangular_well_values.csv'))
         self.construct_labware()
 
-    def read_template(self, new_path: Path = None):
+    def read_template(self, path: Path = None):
         """
         Reads a JSON template file and saves it as a dictionary in self.template.
         :param new_path: the path to the JSON template file. Defaults to '../../data/default.json'.
         """
-        if new_path:
-            path = new_path
-        else:
+        if path is None:
             path = Path('../../data/default.json')
         with open(path, encoding="utf-8") as file:
             self.template = json.load(file)
@@ -70,6 +69,7 @@ class MultipleGrids:
     def update_dimension(self, direction: str, new_value: float = None):
         """
         Helper function for create_plate. Updates the dimensions of the plate.
+        Sets the height to the maximum of all given.
         :param direction: the direction to update ('x', 'y', or 'z')
         :param new_value: the new value for the dimension. If None, uses the first grid's dimension.
         """
@@ -95,38 +95,38 @@ class MultipleGrids:
         Sets display name
         """
         if name is None:
-            self.template["metadata"]["displayName"] = self.grids[0]["display_name"]
-        else:
-            self.template["metadata"]["displayName"] = name
+            name = self.grids[0]["display_name"]
+        self.template["metadata"]["displayName"] = name
 
     def load_name(self, name: str = None):
         """
         Sets load name
         """
         if name is None:
-            self.template["parameters"]["loadName"] = self.grids[0]["load_name"]
-        else:
-            self.template["metadata"]["loadName"] = name
+            name = self.template["parameters"]["loadName"] = self.grids[0]["load_name"]
+        self.template["metadata"]["loadName"] = name
 
     def display_category(self, category=None):
         """
-        Sets category e.g. wellPlate
+        Sets category (e.g. wellPlate). If labware is a tiprack, sets tiprack length.
         """
         if category is None:
-            self.template["metadata"]["displayCategory"] = self.grids[0]["display_category"]
-        else:
-            self.template["metadata"]["displayName"] = category
+            category = self.grids[0]["display_category"]
+        self.template["metadata"]["displayName"] = category
 
-    def well_bottom_shape(self, new_shape=None):
+        if category == "tipRack":
+            self.template["parameters"]["isTiprack"] = True
+            self.template["parameters"]["tipLength"] = self.grids[0]["tipLength"]
+
+    def well_bottom_shape(self, shape=None):
         """
         Changes the bottom shape of a specified well.
         :param well_name: the name of the well to be updated
         :param new_shape: the new bottom shape for the well ('flat', 'v', or 'u')
         """
-        if new_shape is None:
-            self.template["groups"][0]["metadata"]["wellBottomShape"] = self.grids[0]["bottom_shape"]
-        else:
-            self.template["groups"][0]["metadata"]["wellBottomShape"] = new_shape
+        if shape is None:
+            shape = self.grids[0]["bottom_shape"]
+        self.template["groups"][0]["metadata"]["wellBottomShape"] = shape
 
     def create_wells(self, grid, start_row_index):
         """
@@ -144,25 +144,32 @@ class MultipleGrids:
                 x = round(grid['x_offset'] + (col - 1) * grid['x_spacing'], 2)
                 y = round(grid['y_offset'] + row * grid['y_spacing'], 2)
                 z = round(grid['zDimension'] - grid['well_depth'], 2)
-                self.create_well(well_name, grid['well_depth'], grid['volume'],
-                                 grid['well_shape'], grid['well_diameter'], x, y, z)
+
+                if grid['well_shape'] == "circular":
+                    well = {
+                        "depth": grid['well_depth'],
+                        "totalLiquidVolume": grid['volume'],
+                        "shape": grid['well_shape'],
+                        "diameter": grid['well_diameter'],
+                        "x": x,
+                        "y": y,
+                        "z": z
+                    }
+                else:  # well_shape is 'rectangular'
+                    well = {
+                        "depth": grid['well_depth'],
+                        "totalLiquidVolume": grid['volume'],
+                        "shape": grid['well_shape'],
+                        "xDimension": grid['well_xDimension'],
+                        "yDimension": grid['well_yDimension'],
+                        "x": x,
+                        "y": y,
+                        "z": z
+                    }
+
+                self.template["wells"][well_name] = well
 
         return start_row_index + grid['rows']
-
-    def create_well(self, well_name, well_depth, volume, well_shape, well_diameter, x, y, z):
-        """
-        Creates a single well with the specified parameters
-        """
-        well = {
-            "depth": well_depth,
-            "totalLiquidVolume": volume,
-            "shape": well_shape,
-            "diameter": well_diameter,
-            "x": x,
-            "y": y,
-            "z": z
-        }
-        self.template["wells"][well_name] = well
 
     def ordering(self):
         """
@@ -185,6 +192,6 @@ class MultipleGrids:
         self.template["groups"][0]["wells"].extend(wells)
 
 plate = MultipleGrids()
-# print(json.dumps(plate.template, indent=4))
-with open(Path(r"../../data/filtration.json"), "w") as f:
-    json.dump(plate.template, f, indent=4)
+print(json.dumps(plate.template, indent=4))
+# with open(Path(r"../../data/filtration.json"), "w") as f:
+#     json.dump(plate.template, f, indent=4)
