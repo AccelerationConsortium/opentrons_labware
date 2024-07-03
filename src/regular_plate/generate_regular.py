@@ -10,9 +10,9 @@ class Regular:
         self.data = {}
         # self._display_name = None
         self.read_template()
-        self.read_parameters(Path('../../data/24_wellplate_values.csv'))
+        self.read_parameters(Path('../../data/24_wellplate_values.csv'))    # TODO read should be called intentionally, with specifying the filename not default value
         # self.read_parameters(Path('../../data/96_wellplate_values.csv'))
-        self.construct_labware()
+        self.construct_labware()    # TODO construct should be outside __init__, instead called intentionally
 
     def read_template(self, new_path: Path = None):
         """
@@ -22,7 +22,8 @@ class Regular:
         if new_path:
             path = new_path
         else:
-            path = Path('../../data/default.json')
+            # TODO fix relative template
+            path = Path('../../data/default.json') 
         with open(path) as file:
             self.template = json.load(file)
 
@@ -78,21 +79,6 @@ class Regular:
         directions = ("x", "y", "z")
         for i in range(len(directions)):
             self.update_dimension(directions[i], dimensions[i])
-
-    # @property
-    # def display_name(self):
-    #     return self._display_name
-    #
-    # @display_name.setter
-    # def display_name(self, name: str = None):
-    #     """
-    #     sets display name
-    #     """
-    #     if name is None:
-    #         self.template["metadata"]["displayName"] = self.data["display_name"]
-    #     else:
-    #         self.template["metadata"]["displayName"] = name
-    #     self._display_name = self.template["metadata"]["displayName"]
 
     def display_name(self, name: str = None):
         """
@@ -188,6 +174,7 @@ class Regular:
 
         for col in range(1, params['cols'] + 1):
             for row in range(params['rows']):
+                # TODO try to include 'AA,AB,...AZ...ZZ,AAA...' 
                 letter = chr(ord('A') + row)
                 well_name = f"{letter}{col}"
                 x = round(params['x_offset'] + (col - 1) * params['x_spacing'], 2)
@@ -236,6 +223,8 @@ class Regular:
         """
         generates the list of wells based on number of rows and cols
         """
+        # TODO rows and cols should be Union[int, List], if int keep like this, elif list it could be ["A", "C", ...] as specified by user
+        # Also apply to other similar situations
         wells = []
         if rows is None and cols is None:
             for i in range(1, self.data["cols"] + 1):
