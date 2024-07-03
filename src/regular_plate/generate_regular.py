@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Union, List
 
 class Regular:
     """
@@ -10,21 +11,15 @@ class Regular:
         self.data = {}
         # self._display_name = None
         self.read_template()
-        self.read_parameters(Path('../../data/24_wellplate_values.csv'))    # TODO read should be called intentionally, with specifying the filename not default value
-        # self.read_parameters(Path('../../data/96_wellplate_values.csv'))
-        self.construct_labware()    # TODO construct should be outside __init__, instead called intentionally
 
-    def read_template(self, new_path: Path = None):
+    def read_template(self, path: Path = None):
         """
-        reads json template and saves as template dictionary
+        Reads a JSON template file and saves it as a dictionary in self.template.
+        :param path: the path to the JSON template file. Defaults to '../../data/default.json'.
         """
-        # if no new path is specified, use path to default template
-        if new_path:
-            path = new_path
-        else:
-            # TODO fix relative template
-            path = Path('../../data/default.json') 
-        with open(path) as file:
+        if path is None:
+            path = Path(__file__).parent.parent / 'data' / 'default.json'
+        with open(path, encoding="utf-8") as file:
             self.template = json.load(file)
 
     def read_parameters(self, path):
@@ -107,53 +102,6 @@ class Regular:
         else:
             self.template["metadata"]["displayName"] = category
 
-    # def create_wells(self):
-    #     # call calc_pattern() and create_well(), calculating name and xyz values for each well
-    #
-    # def create_well(self, well: dict):
-    #     # call well_depth(), well_volume(), well_shape(), well_diameter()
-    #
-    # def calc_pattern(self, xyz: tuple = ((None, None), (None, None), (None, None))):  # use numpy
-    #     """
-    #     :param xyz: ((x_offset, y_offset), (x_spacing, y_spacing), (rows,cols))
-    #     """
-    #
-    # def well_depth(self, well: dict, depth: float = None):
-    #     """
-    #     sets well depth
-    #     """
-    #     if depth is None:
-    #         well["depth"] = self.data["well_depth"]
-    #     else:
-    #         well["depth"] = depth
-    #
-    # def well_volume(self, well: dict, volume: float = None):
-    #     """
-    #     sets well volume
-    #     """
-    #     if volume is None:
-    #         well["totalLiquidVolume"] = self.data["volume"]
-    #     else:
-    #         well["totalLiquidVolume"] = volume
-    #
-    # def well_shape(self, well: dict, shape: str = None):
-    #     """
-    #     sets well shape (circular or square)
-    #     """
-    #     if shape is None:
-    #         well["shape"] = self.data["well_shape"]
-    #     else:
-    #         well["shape"] = shape
-    #
-    # def well_diameter(self, well: dict, diameter: float = None):
-    #     """
-    #     sets well diameter
-    #     """
-    #     if diameter is None:
-    #         well["diameter"] = self.data["well_diameter"]
-    #     else:
-    #         well["diameter"] = diameter
-
     def create_wells(self, rows=None, cols=None, well_depth=None, volume=None, well_shape=None,
                      well_diameter=None, x_offset=None,
                      y_offset=None, x_spacing=None, y_spacing=None, zDimension=None):
@@ -172,10 +120,19 @@ class Regular:
             if value is None:
                 params[key] = self.data[key]
 
+        def get_label(index):
+            """
+            Convert a numerical index to the corresponding label A,...,Z,AA,...ZZ,AAA...
+            """
+            label = ''
+            while index >= 0:
+                label = chr(ord('A') + index % 26) + label
+                index = index // 26 - 1
+            return label
+
         for col in range(1, params['cols'] + 1):
             for row in range(params['rows']):
-                # TODO try to include 'AA,AB,...AZ...ZZ,AAA...' 
-                letter = chr(ord('A') + row)
+                letter = get_label(row)
                 well_name = f"{letter}{col}"
                 x = round(params['x_offset'] + (col - 1) * params['x_spacing'], 2)
                 y = round(params['y_offset'] + (params['rows'] - row - 1) * params['y_spacing'], 2)
@@ -198,7 +155,7 @@ class Regular:
         }
         self.template["wells"][well_name] = well
 
-    def ordering(self, rows=None, cols=None):
+    def ordering(self, rows: Union[int, List[str]] = None, cols: Union[int, List[int]] = None):
         """
         generates the ordering list based on number of rows and cols
         """
@@ -211,20 +168,21 @@ class Regular:
                     row.append(f"{letter}{i}")
                 ordering.append(row)
         else:
-            for i in range(1, cols + 1):
+            if isinstance(cols, int):
+                cols = range(1, cols + 1)
+            if isinstance(rows, int):
+                rows = [chr(ord('A') + j) for j in range(rows)]
+            for i in cols:
                 row = []
-                for j in range(0, rows):
-                    letter = chr(ord('A') + j)
+                for letter in rows:
                     row.append(f"{letter}{i}")
                 ordering.append(row)
         self.template["ordering"] = ordering
 
-    def wells(self, rows=None, cols=None):
+    def wells(self, rows: Union[int, List[str]] = None, cols: Union[int, List[int]] = None):
         """
         generates the list of wells based on number of rows and cols
         """
-        # TODO rows and cols should be Union[int, List], if int keep like this, elif list it could be ["A", "C", ...] as specified by user
-        # Also apply to other similar situations
         wells = []
         if rows is None and cols is None:
             for i in range(1, self.data["cols"] + 1):
@@ -232,13 +190,19 @@ class Regular:
                     letter = chr(ord('A') + j)
                     wells.append(f"{letter}{i}")
         else:
-            for i in range(1, cols + 1):
-                for j in range(0, rows):
-                    letter = chr(ord('A') + j)
+            if isinstance(cols, int):
+                cols = range(1, cols + 1)
+            if isinstance(rows, int):
+                rows = [chr(ord('A') + j) for j in range(rows)]
+            for i in cols:
+                for letter in rows:
                     wells.append(f"{letter}{i}")
         self.template["groups"][0]["wells"] = wells
 
 plate = Regular()
+plate.read_parameters(Path('../../data/24_wellplate_values.csv'))
+# plate.read_parameters(Path('../../data/96_wellplate_values.csv'))
+plate.construct_labware()
 print(json.dumps(plate.template, indent=4))
 
 # with open(Path(r"../../data/result.json"), "w") as f:

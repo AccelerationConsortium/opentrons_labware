@@ -3,22 +3,18 @@ from pathlib import Path
 
 class MultipleGrids:
     """
-    Class for generating JSON file for irregular labware made up of 2 or more regular grids.
+    Class for generating JSON file for irregular labware made up of any number of regular grids.
     """
 
     def __init__(self):
         self.template = {}
         self.grids = []
         self.read_template()
-        # self.read_parameters(Path('../../data/filtration_values.csv'))
-        # self.read_parameters(Path('../../data/irregular_tuberack_values.csv'))
-        self.read_parameters(Path('../../data/rectangular_well_values.csv'))
-        self.construct_labware()
 
     def read_template(self, path: Path = None):
         """
         Reads a JSON template file and saves it as a dictionary in self.template.
-        :param new_path: the path to the JSON template file. Defaults to '../../data/default.json'.
+        :param path: the path to the JSON template file. Defaults to '../../data/default.json'.
         """
         if path is None:
             path = Path('../../data/default.json')
@@ -121,8 +117,7 @@ class MultipleGrids:
     def well_bottom_shape(self, shape=None):
         """
         Changes the bottom shape of a specified well.
-        :param well_name: the name of the well to be updated
-        :param new_shape: the new bottom shape for the well ('flat', 'v', or 'u')
+        :param shape: the new bottom shape for the well ('flat', 'v', or 'u')
         """
         if shape is None:
             shape = self.grids[0]["bottom_shape"]
@@ -133,12 +128,21 @@ class MultipleGrids:
         Creates wells based on the given parameters
         start_row_index: keeps track of the indexes of letters for row names
         """
-        alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         if "wells" not in self.template:
             self.template["wells"] = {}
 
+        def get_label(index):
+            """
+            Convert a numerical index to the corresponding label A,...,Z,AA,...ZZ,AAA...
+            """
+            label = ''
+            while index >= 0:
+                label = chr(ord('A') + index % 26) + label
+                index = index // 26 - 1
+            return label
+
         for row in range(grid['rows']):
-            row_letter = alphabet[start_row_index + row]
+            row_letter = get_label(start_row_index + row)
             for col in range(1, grid['cols'] + 1):
                 well_name = f"{row_letter}{col}"
                 x = round(grid['x_offset'] + (col - 1) * grid['x_spacing'], 2)
@@ -192,6 +196,11 @@ class MultipleGrids:
         self.template["groups"][0]["wells"].extend(wells)
 
 plate = MultipleGrids()
+# self.read_parameters(Path('../../data/filtration_values.csv'))
+# self.read_parameters(Path('../../data/irregular_tuberack_values.csv'))
+plate.read_parameters(Path('../../data/rectangular_well_values.csv'))
+plate.construct_labware()
 print(json.dumps(plate.template, indent=4))
+
 # with open(Path(r"../../data/filtration.json"), "w") as f:
 #     json.dump(plate.template, f, indent=4)
