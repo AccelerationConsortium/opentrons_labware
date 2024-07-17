@@ -17,7 +17,7 @@ class MultipleGrids:
         :param path: the path to the JSON template file. Defaults to '../../data/default.json'.
         """
         if path is None:
-            path = Path('../../data/default.json')
+            path = Path('../data/default.json')
         with open(path, encoding="utf-8") as file:
             self.template = json.load(file)
 
@@ -198,7 +198,7 @@ class MultipleGrids:
 plate = MultipleGrids()
 # self.read_parameters(Path('../../data/filtration_values.csv'))
 # self.read_parameters(Path('../../data/irregular_tuberack_values.csv'))
-plate.read_parameters(Path('../../data/rectangular_well_values.csv'))
+plate.read_parameters(Path('../data/rectangular_well_values.csv'))
 plate.construct_labware()
 print(json.dumps(plate.template, indent=4))
 

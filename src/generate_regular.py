@@ -200,7 +200,7 @@ class Regular:
         self.template["groups"][0]["wells"] = wells
 
 plate = Regular()
-plate.read_parameters(Path('../../data/24_wellplate_values.csv'))
+plate.read_parameters(Path('../data/24_wellplate_values.csv'))
 # plate.read_parameters(Path('../../data/96_wellplate_values.csv'))
 plate.construct_labware()
 print(json.dumps(plate.template, indent=4))
