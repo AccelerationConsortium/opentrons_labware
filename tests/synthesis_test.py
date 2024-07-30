@@ -11,7 +11,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # Load labware
     wellplate = protocol.load_labware('corning_24_wellplate_3.4ml_flat', '1')
-    path = Path("../data/stirrer.json")
+    path = Path("../data/stirrer.json")     # give it a better name, or even make a load_labware_from_json func outside run()
     with open(path, encoding="utf-8") as file:
         stirrer_file = json.load(file)
     stirrer = protocol.load_labware_from_definition(stirrer_file, '2')
@@ -22,6 +22,7 @@ def run(protocol: protocol_api.ProtocolContext):
     tiprack = protocol.load_labware('opentrons_96_tiprack_1000ul', '4')
 
     # Add 1ml salicylaldehyde stock solution to reaction vial
+    # create indepedent func transfer(volume = 1000, tip = tiprack["A1"], source_zone, target_zone, return_tip: bool = False), and call it
     pipette.pick_up_tip(tiprack['A1'])
     pipette.aspirate(1000, wellplate['A1'])
     pipette.dispense(1000, stirrer['A1'])
@@ -34,7 +35,7 @@ def run(protocol: protocol_api.ProtocolContext):
     pipette.drop_tip()
 
     # Stir for 1h
-    protocol.delay(hours=1)
+    protocol.delay(hours=1)     # also create a func outside run()
 
     # Transfer slurry to filtration
     pipette.pick_up_tip(tiprack['A3'])
