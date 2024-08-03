@@ -1,2 +1,2 @@
 # opentrons_labware
-Creating custom labware for Opetrons
+Creating custom labware for Opentrons
