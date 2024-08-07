@@ -1,0 +1,17 @@
+xDimension, 127
+yDimension, 85
+zDimension, 84
+rows, 2
+cols, 3
+volume, 20000
+well_shape, circular
+bottom_shape, flat
+well_depth,56
+well_diameter,11
+x_spacing,35
+y_spacing,40.5
+x_offset,22
+y_offset,22
+display_name, MatterLab 6 Well Stirrer 20mL
+load_name, matterlab_6_well_stirrer_20ml
+display_category, wellPlate

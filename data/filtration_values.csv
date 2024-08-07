@@ -1,0 +1,18 @@
+xDimension,127,
+yDimension,85,
+zDimension,60,120
+rows,3,3
+cols,4,4
+volume,20000,11000
+well_shape,circular,circular
+bottom_shape,flat,flat
+well_depth,56,43
+well_diameter,7,16
+x_spacing,28,28
+y_spacing,28,28
+x_offset,18,31
+y_offset,18,19
+display_name,MatterLab Filtration ,
+load_name,matterlab_filtration,
+display_category,wellPlate,
+,,

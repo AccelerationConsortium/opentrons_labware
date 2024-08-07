@@ -1,0 +1,18 @@
+xDimension,127.75,85.50
+yDimension,85.50,85.50
+zDimension,124.35,124.35
+rows,3,2
+cols,2,2
+volume,15000,50000
+well_shape,circular,circular
+bottom_shape,v,v
+well_depth,117.50,113.00
+well_diameter,14.90,27.81
+x_spacing,25,35
+y_spacing,25,35
+x_offset,13.88,71.38
+y_offset,17.75,25.25
+display_name,Opentrons 10 Tube Rack with Falcon 4x50 mL 6x15 mL Conical,
+load_name,opentrons_10_tuberack_falcon_4x50ml_6x15ml_conical,
+display_category,tubeRack,
+,,

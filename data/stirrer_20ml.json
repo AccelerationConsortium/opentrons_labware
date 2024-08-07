@@ -1,0 +1,117 @@
+{
+    "ordering": [
+        [
+            "A1",
+            "B1"
+        ],
+        [
+            "A2",
+            "B2"
+        ],
+        [
+            "A3",
+            "B3"
+        ]
+    ],
+    "brand": {
+        "brand": "MatterLab",
+        "brandId": []
+    },
+    "metadata": {
+        "displayName": "MatterLab 6 Well Stirrer 20mL",
+        "displayCategory": "wellPlate",
+        "displayVolumeUnits": "\u00b5L",
+        "tags": []
+    },
+    "dimensions": {
+        "xDimension": 127,
+        "yDimension": 85,
+        "zDimension": 84
+    },
+    "wells": {
+        "A1": {
+            "depth": 56,
+            "totalLiquidVolume": 20000,
+            "shape": "circular",
+            "diameter": 11,
+            "x": 22,
+            "y": 62.5,
+            "z": 28
+        },
+        "A2": {
+            "depth": 56,
+            "totalLiquidVolume": 20000,
+            "shape": "circular",
+            "diameter": 11,
+            "x": 57,
+            "y": 62.5,
+            "z": 28
+        },
+        "A3": {
+            "depth": 56,
+            "totalLiquidVolume": 20000,
+            "shape": "circular",
+            "diameter": 11,
+            "x": 92,
+            "y": 62.5,
+            "z": 28
+        },
+        "B1": {
+            "depth": 56,
+            "totalLiquidVolume": 20000,
+            "shape": "circular",
+            "diameter": 11,
+            "x": 22,
+            "y": 22.0,
+            "z": 28
+        },
+        "B2": {
+            "depth": 56,
+            "totalLiquidVolume": 20000,
+            "shape": "circular",
+            "diameter": 11,
+            "x": 57,
+            "y": 22.0,
+            "z": 28
+        },
+        "B3": {
+            "depth": 56,
+            "totalLiquidVolume": 20000,
+            "shape": "circular",
+            "diameter": 11,
+            "x": 92,
+            "y": 22.0,
+            "z": 28
+        }
+    },
+    "groups": [
+        {
+            "metadata": {
+                "wellBottomShape": "flat"
+            },
+            "wells": [
+                "A1",
+                "B1",
+                "A2",
+                "B2",
+                "A3",
+                "B3"
+            ]
+        }
+    ],
+    "parameters": {
+        "format": "irregular",
+        "quirks": [],
+        "isTiprack": false,
+        "isMagneticModuleCompatible": false,
+        "loadName": "matterlab_6_well_stirrer_20ml"
+    },
+    "namespace": "custom_beta",
+    "version": 1,
+    "schemaVersion": 2,
+    "cornerOffsetFromSlot": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+    }
+}
