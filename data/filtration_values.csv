@@ -6,7 +6,7 @@ cols,4,4
 volume,20000,11000
 well_shape,circular,circular
 bottom_shape,flat,flat
-well_depth,56,53
+well_depth,56,43
 well_diameter,7,16
 x_spacing,28,28
 y_spacing,28,28

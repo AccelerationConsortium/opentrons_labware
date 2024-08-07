@@ -53,217 +53,217 @@
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 18,
-            "y": 18,
-            "z": 4,
-            "diameter": 7
+            "y": 74,
+            "z": 4
         },
         "A2": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 46,
-            "y": 18,
-            "z": 4,
-            "diameter": 7
+            "y": 74,
+            "z": 4
         },
         "A3": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 74,
-            "y": 18,
-            "z": 4,
-            "diameter": 7
+            "y": 74,
+            "z": 4
         },
         "A4": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 102,
-            "y": 18,
-            "z": 4,
-            "diameter": 7
+            "y": 74,
+            "z": 4
         },
         "B1": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 18,
             "y": 46,
-            "z": 4,
-            "diameter": 7
+            "z": 4
         },
         "B2": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 46,
             "y": 46,
-            "z": 4,
-            "diameter": 7
+            "z": 4
         },
         "B3": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 74,
             "y": 46,
-            "z": 4,
-            "diameter": 7
+            "z": 4
         },
         "B4": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 102,
             "y": 46,
-            "z": 4,
-            "diameter": 7
+            "z": 4
         },
         "C1": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 18,
-            "y": 74,
-            "z": 4,
-            "diameter": 7
+            "y": 18,
+            "z": 4
         },
         "C2": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 46,
-            "y": 74,
-            "z": 4,
-            "diameter": 7
+            "y": 18,
+            "z": 4
         },
         "C3": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 74,
-            "y": 74,
-            "z": 4,
-            "diameter": 7
+            "y": 18,
+            "z": 4
         },
         "C4": {
             "depth": 56,
             "totalLiquidVolume": 20000,
             "shape": "circular",
+            "diameter": 7,
             "x": 102,
-            "y": 74,
-            "z": 4,
-            "diameter": 7
+            "y": 18,
+            "z": 4
         },
         "D1": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 31,
-            "y": 19,
-            "z": 67,
-            "diameter": 16
+            "y": 75,
+            "z": 77
         },
         "D2": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 59,
-            "y": 19,
-            "z": 67,
-            "diameter": 16
+            "y": 75,
+            "z": 77
         },
         "D3": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 87,
-            "y": 19,
-            "z": 67,
-            "diameter": 16
+            "y": 75,
+            "z": 77
         },
         "D4": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 115,
-            "y": 19,
-            "z": 67,
-            "diameter": 16
+            "y": 75,
+            "z": 77
         },
         "E1": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 31,
             "y": 47,
-            "z": 67,
-            "diameter": 16
+            "z": 77
         },
         "E2": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 59,
             "y": 47,
-            "z": 67,
-            "diameter": 16
+            "z": 77
         },
         "E3": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 87,
             "y": 47,
-            "z": 67,
-            "diameter": 16
+            "z": 77
         },
         "E4": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 115,
             "y": 47,
-            "z": 67,
-            "diameter": 16
+            "z": 77
         },
         "F1": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 31,
-            "y": 75,
-            "z": 67,
-            "diameter": 16
+            "y": 19,
+            "z": 77
         },
         "F2": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 59,
-            "y": 75,
-            "z": 67,
-            "diameter": 16
+            "y": 19,
+            "z": 77
         },
         "F3": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 87,
-            "y": 75,
-            "z": 67,
-            "diameter": 16
+            "y": 19,
+            "z": 77
         },
         "F4": {
-            "depth": 53,
+            "depth": 43,
             "totalLiquidVolume": 11000,
             "shape": "circular",
+            "diameter": 16,
             "x": 115,
-            "y": 75,
-            "z": 67,
-            "diameter": 16
+            "y": 19,
+            "z": 77
         }
     },
     "groups": [

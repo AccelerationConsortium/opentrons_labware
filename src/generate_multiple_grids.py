@@ -99,8 +99,8 @@ class MultipleGrids:
         Sets load name
         """
         if name is None:
-            name = self.template["parameters"]["loadName"] = self.grids[0]["load_name"]
-        self.template["metadata"]["loadName"] = name
+            name = self.grids[0]["load_name"]
+        self.template["parameters"]["loadName"] = name
 
     def display_category(self, category=None):
         """
@@ -108,7 +108,7 @@ class MultipleGrids:
         """
         if category is None:
             category = self.grids[0]["display_category"]
-        self.template["metadata"]["displayName"] = category
+        self.template["metadata"]["displayCategory"] = category
 
         if category == "tipRack":
             self.template["parameters"]["isTiprack"] = True
@@ -146,7 +146,8 @@ class MultipleGrids:
             for col in range(1, grid['cols'] + 1):
                 well_name = f"{row_letter}{col}"
                 x = round(grid['x_offset'] + (col - 1) * grid['x_spacing'], 2)
-                y = round(grid['y_offset'] + row * grid['y_spacing'], 2)
+                y = round(grid['y_offset'] + (grid['rows'] - row - 1) * grid['y_spacing'], 2)
+                # y = round(grid['y_offset'] + row * grid['y_spacing'], 2)
                 z = round(grid['zDimension'] - grid['well_depth'], 2)
 
                 if grid['well_shape'] == "circular":
@@ -196,11 +197,17 @@ class MultipleGrids:
         self.template["groups"][0]["wells"].extend(wells)
 
 plate = MultipleGrids()
-# self.read_parameters(Path('../../data/filtration_values.csv'))
-# self.read_parameters(Path('../../data/irregular_tuberack_values.csv'))
-plate.read_parameters(Path('../data/rectangular_well_values.csv'))
+plate.read_parameters(Path('../data/filtration_values.csv'))
+# plate.read_parameters(Path('../data/irregular_tuberack_values.csv'))
+# plate.read_parameters(Path('../data/rectangular_well_values.csv'))
 plate.construct_labware()
 print(json.dumps(plate.template, indent=4))
 
-# with open(Path(r"../../data/filtration.json"), "w") as f:
-#     json.dump(plate.template, f, indent=4)
+with open(Path(r"../data/filtration.json"), "w") as f:
+    json.dump(plate.template, f, indent=4)
+
+plate = MultipleGrids()
+plate.read_parameters(Path('../data/stirrer_values_20ml.csv'))
+plate.construct_labware()
+with open(Path(r"../data/stirrer_20ml.json"), "w") as f:
+    json.dump(plate.template, f, indent=4)
