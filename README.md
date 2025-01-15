@@ -1,2 +1,2 @@
 # opentrons_labware
-Creating custom labware for Opentrons
+This repository extends the Opentrons platform to support irregular custom labware definitions, allowing for more complex and versatile lab automation workflows. It also includes a labware status updater for dynamic resource management during protocols and sample  Fusion360 models with integrated Python and Arduino code for flexible and low-cost filtration, stirring, and heating modules. For demo usage, see the salen synthesis protocol in the test folder. This software was designed for the Opentrons OT-2 liquid handler but is also compatible with similar platforms such as the Science Jubilee.
